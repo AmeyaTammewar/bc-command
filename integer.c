@@ -1,17 +1,22 @@
-#include "integer.h"
+#include "g.h"
 #include <string.h>
 #include <stdlib.h>
 #include <stdio.h>
 
-void initInt(Integer a) {
-	a.i = 0;
-	a.arr = NULL;
+void initInt(Integer *a) {
+	a->i = 0;
+	a->arr = NULL;
 }
-
+void integer(Integer *a) {
+	int i;
+	for(i = 0; i <= a->i; i++) {
+		        a->arr[i] = a->arr[i] - 48;
+	}
+}
 Integer CreatIntegerFromString(char *str) {
 	int la;
 	static Integer I;
-	initInt(I);
+	initInt(&I);
 	la = strlen(str) - 1;
 	I.arr = (char *)malloc(sizeof(char)*(la+2));
 	strcpy(I.arr, str);
@@ -24,8 +29,8 @@ Integer CreatIntegerFromString(char *str) {
 
 
 Integer AddIntegers(Integer a, Integer b) {
-	Integer c;initInt(c);
-	static Integer Add;initInt(Add);
+	Integer c;initInt(&c);
+	static Integer Add;initInt(&Add);
 	int la, lb, i, j, r = 0, diff;
 	la = a.i - 1;
 	lb = b.i - 1;
@@ -63,9 +68,9 @@ Integer AddIntegers(Integer a, Integer b) {
 
 			
 Integer multiply(Integer a, Integer b) {
-    static Integer mul; initInt(mul);
-    Integer c; initInt(c);
-    Integer temp; initInt(temp);
+    static Integer mul; initInt(&mul);
+    Integer c; initInt(&c);
+    Integer temp; initInt(&temp);
     int la, lb;
     int i, j, x = 0, y;
     long int r = 0;
@@ -125,8 +130,8 @@ void PrintInteger(Integer a) {
 
 
 Integer SubtractIntegers(Integer a, Integer b) {
-	Integer c;initInt(c);
-	static Integer Subtract;initInt(Subtract);
+	Integer c;initInt(&c);
+	static Integer Subtract;initInt(&Subtract);
 	int la, lb, r = 0, i, carry = 0, diff, flag = 0;
 	la = a.i - 1;
 	lb = b.i - 1;
