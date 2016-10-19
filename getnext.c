@@ -1,20 +1,22 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "getnext.h"
-
+#include "g.h"
+#include <string.h>
 enum states { SPC, DIG, OPR, STOP, ERR, A, VAR};
 token *getnext(char *arr, int *reset) {
 	static int currstate;
 	int nextstate;
 	static int i;
 	Integer num;
-	num.i = 0;
+	initInt(&num);
+	num.arr = (char*)malloc(sizeof(char)*MAX);
 	if(*reset == 1) {
 		i = 0;
 		currstate = SPC;
 		*reset = 0;
 	}
 	token *t = (token *)malloc(sizeof(token));
+	initInt(&t->number);
 	while(1) {
 		switch(arr[i]) {
 			case '0': case '1': case '2': case '3':
@@ -49,17 +51,23 @@ token *getnext(char *arr, int *reset) {
 
 		switch(currstate) {
 			case SPC:
-				if(nextstate == DIG)
+				if(nextstate == DIG) {
 						num.arr[num.i] = arr[i];
-						num.i++;			
-				break;
+						num.i++;
+						num.arr[num.i] = '\0';
+						break;
+				}
 			case DIG:
-				if(nextstate == DIG)
+				if(nextstate == DIG) {
 					num.arr[num.i] = arr[i];
 					num.i++;
+					num.arr[num.i] = '\0';
+				}
 				else  {
 					t->type = OPERAND;
-					t->number = num;
+					t->number.arr = (char*)malloc(sizeof(char)*MAX);
+					strcpy(t->number.arr, num.arr);
+					t->number.i = num.i;
 					currstate = nextstate;
 					return t;
 				}
